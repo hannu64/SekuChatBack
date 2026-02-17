@@ -1,0 +1,14 @@
+<?php
+echo "<!DOCTYPE html>
+<html>
+<body>
+
+<h1>SekuChat BackEnd</h1>
+<p>Testing seku.chat website index2</p>
+
+<p>This is BackEnd, python and DB here</p>
+<p>This BackEnd is on Railway</p>
+
+</body>
+</html>"; 
+?>
