@@ -1,5 +1,3 @@
-# This is main.py
-
 import os
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy import create_engine, text
