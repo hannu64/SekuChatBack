@@ -1,15 +1,27 @@
 # This is main.py
 
-from fastapi import Depends, APIRouter
-from sqlalchemy.orm import Session
-from database import get_db  # your DB session dependency
+from fastapi import FastAPI, Depends, HTTPException
+from sqlalchemy import create_engine, text
+from sqlalchemy.orm import sessionmaker, Session
+import os
 
-router = APIRouter()
+app = FastAPI()
 
-@router.get("/test-db")
+DATABASE_URL = os.getenv("DATABASE_URL")
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+@app.get("/test-db")
 def test_db(db: Session = Depends(get_db)):
     try:
-        result = db.execute("SELECT 1")
-        return {"status": "Connected", "result": result.scalar()}
+        result = db.execute(text("SELECT 1"))
+        return {"status": "Database connected!", "result": result.scalar()}
     except Exception as e:
-        return {"status": "Error", "detail": str(e)}
+        raise HTTPException(status_code=500, detail=f"DB error: {str(e)}")
