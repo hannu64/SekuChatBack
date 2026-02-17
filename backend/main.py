@@ -1,13 +1,15 @@
 # This is main.py
 
-from fastapi import Depends
+from fastapi import Depends, APIRouter
 from sqlalchemy.orm import Session
-from database import get_db  # assuming your database.py has this
+from database import get_db  # your DB session dependency
 
-@app.get("/test-db")
+router = APIRouter()
+
+@router.get("/test-db")
 def test_db(db: Session = Depends(get_db)):
     try:
-        db.execute("SELECT 1")
-        return {"status": "Database connected successfully!"}
+        result = db.execute("SELECT 1")
+        return {"status": "Connected", "result": result.scalar()}
     except Exception as e:
         return {"status": "Error", "detail": str(e)}
