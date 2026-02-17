@@ -1,5 +1,6 @@
+import os  # Must come first
 print("Starting app - DATABASE_URL:", os.getenv("DATABASE_URL"))
-import os
+
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, Session
