@@ -13,9 +13,13 @@ from sqlalchemy.orm import sessionmaker, Session
 
 app = FastAPI(title="SekuChat PoC Backend")
 
+# Force psycopg driver (v3) by adding +psycopg to the URL scheme
 DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL not set!")
+
+# Add +psycopg to use the new driver
+DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
