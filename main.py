@@ -1,5 +1,11 @@
-import os  # Must come first
+import os
 print("Starting app - DATABASE_URL:", os.getenv("DATABASE_URL"))
+
+try:
+    import psycopg
+    print("psycopg imported successfully")
+except ImportError as e:
+    print("psycopg import failed:", e)
 
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy import create_engine, text
@@ -7,7 +13,6 @@ from sqlalchemy.orm import sessionmaker, Session
 
 app = FastAPI(title="SekuChat PoC Backend")
 
-# DB setup
 DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL not set!")
