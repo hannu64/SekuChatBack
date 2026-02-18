@@ -13,7 +13,9 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL not set!")
 
-engine = create_engine(DATABASE_URL)
+# Force psycopg driver by changing scheme to postgresql+psycopg
+engine = create_engine(DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1))
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def get_db():
